@@ -1,0 +1,19 @@
+define(`R2_PKG', `libxml2')dnl
+define(`R2_VERSION', `2.9.1')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `ftp://xmlsoft.org/libxml2/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_DEFAULT_RULES_NOCONFIG
+
+.libxml2.args := \
+	--prefix=$(pfx) \
+	--without-python
+
+.libxml2.config: .libxml2.unpack
+	cd build/$(libxml2.dir) && \
+	CC=$(CC) CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.libxml2.args)  && \
+	touch $(CWD)/.libxml2.config
+

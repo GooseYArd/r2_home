@@ -1,0 +1,42 @@
+define(`R2_PKG', `haproxy')dnl
+define(`R2_VERSION_MAJOR', `1.5')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.2')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://haproxy.1wt.eu/download/R2_VERSION_MAJOR/src/R2_DIST')dnl
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+haproxy.args = \
+             TARGET=linux2628 \
+             USE_OPENSSL=1 \
+             CFLAGS=$(CFLAGS) \
+             CPPFLAGS=$(CPPFLAGS) \
+             LDFLAGS=$(LDFLAGS) \
+             PREFIX=$(pfx)
+
+.haproxy.config: .openssl.install .haproxy.unpack
+	cd build/$(haproxy.dir) && \
+        sed s@/usr/local@$(pfx)@g < Makefile > Makefile.new && \
+        mv Makefile.new Makefile && \
+	touch $(CWD)/.haproxy.config
+
+.haproxy.make: .haproxy.config
+	cd build/$(haproxy.dir) && \
+	$(MAKE) -j4 $(haproxy.args)  && \
+	touch $(CWD)/.haproxy.make
+
+.haproxy.install: .haproxy.make
+	cd build/$(haproxy.dir) && \
+	$(haproxy.args) make install $(DEST) && \
+	touch $(CWD)/.haproxy.install
+
+R2_RULE_CLEAN
+
+
+
+

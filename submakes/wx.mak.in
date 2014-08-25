@@ -1,0 +1,31 @@
+define(`R2_PKG', `wx')dnl
+define(`R2_VERSION', `R15B01')dnl
+define(`R2_DIR', `otp_src_R15B01/lib/wx')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://www.erlang.org/download/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+
+.wx.fetch:
+	touch -a $(CWD)/.R2_PKG.fetch
+
+.wx.unpack: .erlang.unpack
+	touch -a $(CWD)/.R2_PKG.unpack
+
+.wx.args := \
+	--prefix=$(pfx) \
+	--with-wx-config=$(pfx)/bin/wx-config
+
+.wx.config: .erlang.make .wxgtk.install
+	cd build/R2_DIR && \
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.wx.args)  && \
+	touch $(CWD)/$@
+
+R2_RULE_MAKE
+
+R2_RULE_INSTALL
+
+.wx.clean:
+	rm .wx.*
+

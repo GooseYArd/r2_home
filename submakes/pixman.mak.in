@@ -1,0 +1,21 @@
+define(`R2_PKG', `pixman')dnl
+define(`R2_VERSION', `0.32.4')
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl		  
+define(`R2_URL', `http://cairographics.org/releases/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.pixman.args := \
+	--prefix=$(pfx)
+
+.pixman.config: .pixman.unpack .libpng.install
+	cd build/$(pixman.dir) && \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.pixman.args)  && \
+	touch $(CWD)/.pixman.config
+

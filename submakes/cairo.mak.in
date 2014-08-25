@@ -1,0 +1,25 @@
+define(`R2_PKG', `cairo')dnl
+define(`R2_VERSION', `1.12.16')
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl		  
+define(`R2_URL', `http://cairographics.org/releases/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.cairo.args := \
+	--prefix=$(pfx) \
+	--enable-ft=yes \
+	--enable-fc=yes \
+	--enable-xlib=yes \
+	--enable-xlib-xcb=yes
+
+.cairo.config: .cairo.unpack .xorg.install .libpng.install .fontconfig.install .freetype.install .pixman.install
+	cd build/$(cairo.dir) && \
+	CC=$(CC) \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.cairo.args)  && \
+	touch $(CWD)/.cairo.config

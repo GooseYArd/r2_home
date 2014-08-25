@@ -1,0 +1,35 @@
+define(`R2_PKG', `atk')dnl
+define(`R2_VERSION_MAJOR', `2.13')
+define(`R2_VERSION', `R2_VERSION_MAJOR.1')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `http://ftp.gnome.org/pub/gnome/sources/atk/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+.atk.args := \
+	--prefix=$(pfx)
+
+.atk.config: .atk.unpack .glib.install
+	cd build/$(atk.dir) && \
+	export LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" && \
+	export PATH=$(PATH) && \
+	CC=$(CC) \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.atk.args)  && \
+	touch $(CWD)/.atk.config
+
+.atk.make: .atk.config
+	cd build/$(atk.dir) && \
+	export PATH=$(PATH) && \
+	$(MAKE) -j4 $(atk.args)  && \
+	touch $(CWD)/.atk.make
+
+R2_RULE_INSTALL
+R2_RULE_CLEAN

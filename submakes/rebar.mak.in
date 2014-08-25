@@ -1,0 +1,24 @@
+define(`R2_PKG', `rebar')dnl
+define(`R2_VERSION', `')dnl
+define(`R2_DIR', `rebar-master')dnl
+define(`R2_DIST', `master.zip')dnl
+define(`R2_URL', `https://github.com/rebar/rebar/archive/master.zip')dnl
+
+include(`r2.m4')
+R2_DECLS
+
+R2_RULE_FETCH
+
+.rebar.unpack: .rebar.fetch
+	cd build && \
+	unzip -f R2_DIST && \
+	touch $(CWD)/$@
+
+.rebar.compile: .rebar.unpack
+	cd build/R2_DIR && \
+	make && \
+	touch $(CWD)/$@
+
+.rebar.install: .rebar.compile
+	cp build/R2_DIR/rebar $(pfx)/bin/rebar && \
+	touch $(CWD)/$@

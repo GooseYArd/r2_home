@@ -1,0 +1,24 @@
+define(`R2_PKG', `gdk-pixbuf')dnl
+define(`R2_VERSION_MAJOR', `2.30')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.7')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl		  
+define(`R2_URL', `http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.gdk-pixbuf.args := \
+	--prefix=$(pfx) \
+	--without-libtiff \
+	--without-libjpeg
+
+.gdk-pixbuf.config: .gdk-pixbuf.unpack
+	cd build/$(gdk-pixbuf.dir) && \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.gdk-pixbuf.args)  && \
+	touch $(CWD)/.gdk-pixbuf.config
+

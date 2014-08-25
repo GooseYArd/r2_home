@@ -1,0 +1,4 @@
+Flex is a free implementation of the well-known Lex program for lexical
+analysis. Since it is not (and never was) a GNU package, we don't
+distribute it here. Please see http://flex.sourceforge.net for the
+latest release and information.

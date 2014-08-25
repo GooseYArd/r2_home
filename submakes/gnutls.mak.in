@@ -1,0 +1,17 @@
+define(`R2_PKG', `gnutls')dnl
+define(`R2_VERSION', `3.2.14')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.gnutls.args := \
+	--prefix=$(pfx)
+
+.gnutls.config: .nettle.install
+	cd build/$(gnutls.dir) && \
+        PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.gnutls.args)  && \
+	touch $(CWD)/.gnutls.config
+

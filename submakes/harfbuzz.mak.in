@@ -1,0 +1,23 @@
+define(`R2_PKG', `harfbuzz')dnl
+define(`R2_VERSION', `0.9.28')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.bz2')dnl		  
+define(`R2_URL', `http://www.freedesktop.org/software/harfbuzz/release/R2_DIST')dnl
+
+#http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.28.tar.bz2
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.harfbuzz.args := \
+	--prefix=$(pfx)
+
+.harfbuzz.config: .harfbuzz.unpack
+	cd build/$(harfbuzz.dir) && \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.harfbuzz.args)  && \
+	touch $(CWD)/.harfbuzz.config
+

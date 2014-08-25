@@ -1,0 +1,34 @@
+define(`R2_PKG', `ncurses')dnl
+define(`R2_VERSION', `5.9')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `ftp://invisible-island.net/ncurses/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.ncurses.args := \
+	--prefix=$(pfx) \
+	--with-shared \
+        --with-pkg-config-libdir=$(PKG_CONFIG_PATH) \
+        --with-terminfo-dirs=/usr/share/terminfo:/etc/terminfo \
+        --enable-echo \
+        --enable-const \
+        --without-ada \
+        --without-tests \
+        --enable-symlinks \
+        --disable-termcap \
+        --with-default-terminfo-dir=/etc/terminfo \
+        --with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo" \
+        --with-ticlib=tic \
+        --with-termlib=tinfo \
+        --with-xterm-kbs=del \
+        --with-ncursesw 
+
+.ncurses.config: .ncurses.unpack
+	cd build/$(ncurses.dir) && \
+	sed -i .orig s/-no-cpp-precomp// configure && \
+	patch -p1 < $(CWD)/patches/ncurses-osx.patch  && \
+	CXX=$(CXX) CC=$(CC) CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.ncurses.args)  && \
+	touch $(CWD)/.ncurses.config
+

@@ -1,0 +1,14 @@
+.exist
+build
+dists
+*.mak
+.*.fetch
+.*.config
+.*.install
+.*.make
+.*.unpack
+.*.patch
+*.sh
+config.m4
+install
+*~

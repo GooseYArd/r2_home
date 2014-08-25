@@ -1,0 +1,32 @@
+define(`R2_PKG', `erlang')dnl
+dnl define(`R2_VERSION', `17.1')dnl
+define(`R2_VERSION', `R15B03')dnl
+define(`R2_DIR', `otp_src_R15B03')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://www.erlang.org/download/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+erlang.args := \
+	--prefix=$(pfx) \
+	--disable-native-libs \
+	--disable-vm-probes \
+	--enable-hipe \
+	--enable-kernel-poll \
+        --with-termcap \
+	--with-wx-config=$(pfx)/bin/wx-config \
+	--without-odbc \
+	--enable-threads \
+	--enable-sctp \
+	--enable-smp-support \
+        --without-javac
+
+#	--with-ssl=/usr \
+
+.erlang.config: .erlang.unpack .wxgtk.install .openssl.install .ncurses.install
+	cd build/$(erlang.dir) && \
+	LDFLAGS="$(LDFLAGS)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(erlang.args)  && \
+	touch $(CWD)/.erlang.config
+
+

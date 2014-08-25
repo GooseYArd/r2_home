@@ -1,0 +1,11 @@
+define(`R2_PKG', `flex')dnl
+define(`R2_VERSION', `2.5.39')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `http://sourceforge.net/projects/flex/files/R2_DIST/download')dnl
+
+flex.config_deps := .gettext.install
+
+include(`r2.m4')
+R2_DECLS
+R2_DEFAULT_RULES

@@ -1,0 +1,21 @@
+define(`R2_PKG', `xcb-proto')dnl
+define(`R2_VERSION', `1.10')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.bz2')dnl		  
+define(`R2_URL', `http://xcb.freedesktop.org/dist/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.xcb-proto.args := \
+	--prefix=$(pfx)
+
+.xcb-proto.config: .xcb-proto.unpack
+	cd build/$(xcb-proto.dir) && \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.xcb-proto.args)  && \
+	touch $(CWD)/.xcb-proto.config
+

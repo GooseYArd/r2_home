@@ -1,0 +1,58 @@
+define(`R2_PKG', `xorg')dnl
+define(`R2_VERSION', `git')dnl
+define(`R2_DIR', `xorg')dnl
+#define(`R2_DIST', `R2_DIR.tar.bz2')dnl		  
+#define(`R2_URL', `http://xcb.freedesktop.org/dist/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+
+.xorg.args := \
+	--prefix=$(pfx)
+
+.xorg.unpack:
+	cd build && \
+	git clone git://anongit.freedesktop.org/git/xorg/util/modular xorg-git && \
+	mkdir xorg && \
+	touch $(CWD)/$@
+
+#.xorg.make: .xorg.unpack .autoconf.install .automake.install .libtool.install .pkg-config.install .bison.install .flex.install .freetype.install .fontconfig.install .libpng.install
+.xorg.make: .xorg.unpack .autoconf.install .automake.install .libtool.install .pkg-config.install .bison.install .freetype.install .fontconfig.install .libpng.install
+	cd build && \
+	export PREFIX=$(pfx) && \
+	export PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) && \
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
+	export ACLOCAL="aclocal -I $(pfx)/share/aclocal -I $(pfx)/share/autoconf" && \
+	export PATH=$(PATH) && \
+	export CC=$(CC) && \
+	export CFLAGS="$(CFLAGS)" && \
+	export LDFLAGS="$(LDFLAGS)" && \
+	export MAKEFLAGS="-j8" && \
+	xorg-git/build.sh --modfile $(CWD)/xorg.list --clone $(pfx) --autoresume $(CWD)/resume && \
+	touch $(CWD)/.xorg.make
+
+.xorg.install: .xorg.make
+	touch $(CWD)/.xorg.install
+
+.xorg.clean:
+	rm -rf \
+	build/$(xorg.dir) \
+	build/xorg-git \
+	resume \
+	build/app \
+	build/data \
+	build/doc \
+	build/font \
+	build/lib \
+	build/pixman \
+	build/proto \
+	build/util \
+	build/xcb \
+	.xorg.*
+GLOBAL_CLEAN += .xorg.clean
+
+.xorg.distclean:
+	rm -f dists/$(xorg.tgz)
+
+GLOBAL_DISTCLEAN += .xorg.distclean
+

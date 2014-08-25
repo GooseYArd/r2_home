@@ -1,0 +1,9 @@
+define(`R2_PKG', `libyaml')dnl
+define(`R2_VERSION', `0.1.4')dnl
+define(`R2_DIR', `yaml-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://pyyaml.org/download/libyaml/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES
+

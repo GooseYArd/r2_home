@@ -1,0 +1,28 @@
+define(`R2_PKG', `glib')dnl
+define(`R2_VERSION_MAJOR', `2.40')
+define(`R2_VERSION', `R2_VERSION_MAJOR.0')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `http://ftp.gnome.org/pub/gnome/sources/glib/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.glib.args := \
+	--prefix=$(pfx) \
+	--with-libiconv=gnu \
+	--enable-dtrace=no
+
+.glib.config: .glib.unpack .libffi.install .gettext.install
+	cd build/$(glib.dir) && \
+	patch -p2 < ../../patches/glib.decarbon.patch && \
+	export PATH=$(PATH) && \
+	autoreconf && \
+	CC=$(CC) \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.glib.args)  && \
+	touch $(CWD)/.glib.config
+

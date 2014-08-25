@@ -1,0 +1,47 @@
+define(`R2_PKG', `gtk+')dnl
+define(`R2_VERSION_MAJOR', `2.24')
+define(`R2_VERSION', `R2_VERSION_MAJOR.23')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `http://ftp.gnome.org/pub/gnome/sources/gtk+/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+gtk+.args := \
+	--prefix=$(pfx)
+
+.gtk+.config: .gtk+.unpack .atk.install .glib.install .pango.install .gdk-pixbuf.install
+	cd build/$(gtk+.dir) && \
+	CC=$(CC) \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(pfx)/lib/libxml2.a" \
+	PATH=$(PATH) \
+	DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) \
+	LDSHARED=$(LDSHARED) \
+	./configure $(gtk+.args)  && \
+	touch $(CWD)/.gtk+.config
+
+
+#	LDSHARED=$(LDSHARED) \
+
+.gtk+.make: .gtk+.config
+	cd build/$(gtk+.dir) && \
+	export PATH=$(PATH) && \
+	export DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) && \
+	$(MAKE) && \
+	touch $(CWD)/.gtk+.make
+
+.gtk+.install: .gtk+.make
+	cd build/$(gtk+.dir) && \
+	export DYLD_LIBRARY_PATH=/usr/lib:$(DYLD_LIBRARY_PATH) && \
+	LDSHARED=$(LDSHARED) \
+	make install $(DEST) && \
+	touch $(CWD)/.gtk+.install
+
+R2_RULE_CLEAN

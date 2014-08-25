@@ -1,0 +1,22 @@
+define(`R2_PKG', `pangox-compat')dnl
+define(`R2_VERSION_MAJOR', `0.0')
+define(`R2_VERSION', `R2_VERSION_MAJOR.2')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl		  
+define(`R2_URL', `http://ftp.gnome.org/pub/GNOME/sources/pangox-compat/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.pangox-compat.args := \
+	--prefix=$(pfx)
+
+.pangox-compat.config: .pangox-compat.unpack .pango.install .xorg.install
+	cd build/$(pangox-compat.dir) && \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	./configure $(.pangox-compat.args)  && \
+	touch $(CWD)/.pangox-compat.config
+

@@ -1,0 +1,35 @@
+define(`R2_PKG', `wxwidgets')dnl
+define(`R2_VERSION', `3.0.1')dnl
+define(`R2_DIR', `wxWidgets-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.bz2')dnl
+define(`R2_URL', `http://sourceforge.net/projects/wxwindows/files/R2_VERSION/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+
+.wxwidgets.args := \
+	--prefix=$(pfx) \
+	--without-shared \
+        --enable-unicode \
+        --without-opengl \
+	--enable-static
+
+#	--x-includes=$(pfx)/include \
+#	--x-libraries=$(pfx)/lib
+
+.wxwidgets.config: .wxwidgets.unpack
+	cd build/$(wxwidgets.dir) && \
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.wxwidgets.args)  && \
+	touch $(CWD)/.wxwidgets.config
+
+.wxwidgets.make: .wxwidgets.config
+	cd build/$(wxwidgets.dir) && \
+	$(MAKE) -j4 && \
+	touch $(CWD)/.wxwidgets.make
+
+.wxwidgets.install: .wxwidgets.make
+	cd build/$(wxwidgets.dir) && \
+	make install $(DEST) && \
+	touch $(CWD)/.wxwidgets.install
+
+R2_RULE_CLEAN

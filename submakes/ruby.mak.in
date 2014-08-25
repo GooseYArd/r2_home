@@ -1,0 +1,25 @@
+define(`R2_PKG', `ruby')dnl
+define(`R2_VERSION_MAJOR', `2.1')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.2')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://cache.ruby-lang.org/pub/ruby/R2_VERSION_MAJOR/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.ruby.args := \
+	--with-openssl-dir=$(pfx) \
+	--prefix=$(pfx)
+
+.ruby.config: .ruby.unpack .libyaml.install .openssl.install .readline.install
+	cd R2_BUILD/$(ruby.dir) && \
+	CC=$(CC) \
+	CXX=$(CXX) \
+	LDFLAGS="$(LDFLAGS)" \
+	LDSHARED=$(LDSHARED) \
+	DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) \
+	CFLAGS="$(CFLAGS) -DHAVE_RL_USERNAME_COMPLETION_FUNCTION" \
+	CXXFLAGS="$(CFLAGS)" ./configure $(.ruby.args)  && \
+	touch $(CWD)/$@
+

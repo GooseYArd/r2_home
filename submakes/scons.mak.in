@@ -1,0 +1,27 @@
+define(`R2_PKG', `scons')dnl
+define(`R2_VERSION', `2.3.1')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl		  
+define(`R2_URL', `http://prdownloads.sourceforge.net/scons/R2_DIST')dnl
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+.scons.args := \
+	--prefix=$(pfx)
+
+.scons.make:
+	cd build/R2_DIR && \
+	python setup.py build && \
+	touch $(CWD)/.scons.make
+
+.scons.install: .scons.make
+	cd build && \
+	ln -s R2_DIR scons && \
+	touch $(CWD)/.scons.install
+
+R2_RULE_CLEAN
+
