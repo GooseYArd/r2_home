@@ -1,5 +1,5 @@
 
-CWD = $(PWD)
+CWD = $(CURDIR)
 pfx := $(CWD)/install
 DEST :=
 SUBMAKES := $(wildcard submakes/*.mak.in)
