@@ -11,7 +11,7 @@ dnl
 define(`R2_RULE_FETCH',
 .R2_PKG.fetch:
 	mkdir -p $(CWD)/R2_DISTS && cd $(CWD)/R2_DISTS && wget --quiet -N $(R2_PKG.url) -O $(R2_PKG.tgz)
-	cd R2_DISTS && curl -s -o $(R2_PKG.tgz) -C - -L $(R2_PKG.url)
+#	cd R2_DISTS && curl -s -o $(R2_PKG.tgz) -C - -L $(R2_PKG.url)
 	touch -a $(CWD)/.R2_PKG.fetch
 )dnl
 dnl
