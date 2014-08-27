@@ -17,7 +17,7 @@ R2_DEFAULT_RULES_NOCONFIG
     	      --with-x-toolkit=no \
     	      --without-x
 
-.emacs.config: .emacs.unpack
+.emacs.config: .ncurses.install .emacs.unpack
 	cd build/$(emacs.dir) && \
 	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
 	touch $(CWD)/.emacs.config
