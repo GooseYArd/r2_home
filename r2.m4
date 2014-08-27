@@ -10,8 +10,8 @@ R2_PKG.url := R2_URL
 dnl
 define(`R2_RULE_FETCH',
 .R2_PKG.fetch:
-	cd R2_DISTS && wget --quiet -N $(R2_PKG.url) -O $(R2_PKG.tgz)
-#	cd R2_DISTS && curl -s -o $(R2_PKG.tgz) -C -L $(R2_PKG.url)
+	mkdir -p $(CWD)/R2_DISTS && cd $(CWD)/R2_DISTS && wget --quiet -N $(R2_PKG.url) -O $(R2_PKG.tgz)
+	cd R2_DISTS && curl -s -o $(R2_PKG.tgz) -C - -L $(R2_PKG.url)
 	touch -a $(CWD)/.R2_PKG.fetch
 )dnl
 dnl
@@ -23,7 +23,7 @@ dnl
 define(`R2_RULE_UNPACK',
 .R2_PKG.unpack: .R2_PKG.fetch R2_SHA1DIR/R2_PKG.sha1
 #	cd $(CWD)/R2_DISTS && $(SHASUM) -c $(CWD)/R2_SHA1DIR/R2_PKG.sha1
-	cd $(CWD)/R2_BUILD && tar xvf $(CWD)/R2_DISTS/$(R2_PKG.tgz) && touch $(CWD)/.R2_PKG.unpack
+	mkdir -p R2_BUILD && cd $(CWD)/R2_BUILD && tar xvf $(CWD)/R2_DISTS/$(R2_PKG.tgz) && touch $(CWD)/.R2_PKG.unpack
 )dnl
 dnl
 define(`R2_RULE_CONFIG',

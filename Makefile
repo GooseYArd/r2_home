@@ -38,7 +38,6 @@ all: \
 	dists/.exist \
 	build/.exist \
 	$(OSDEPS) \
-	.emacs.install \
 	env.sh
 
 # Misc small targets
