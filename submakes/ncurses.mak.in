@@ -27,7 +27,7 @@ R2_DEFAULT_RULES_NOCONFIG
 
 .ncurses.config: .ncurses.unpack
 	cd build/$(ncurses.dir) && \
-	sed -i .orig s/-no-cpp-precomp// configure && \
+	sed -i s/-no-cpp-precomp// configure && \
 	patch -p1 < $(CWD)/patches/ncurses-osx.patch  && \
 	CXX=$(CXX) CC=$(CC) CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.ncurses.args)  && \
 	touch $(CWD)/.ncurses.config
