@@ -19,6 +19,7 @@ R2_DEFAULT_RULES_NOCONFIG
 
 .emacs.config: .ncurses.install .emacs.unpack
 	cd build/$(emacs.dir) && \
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
+	patch -p1 < $(CWD)/patches/emacs-osx.patch  && \
+	CFLAGS="$(CFLAGS) $(LDFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
 	touch $(CWD)/.emacs.config
 

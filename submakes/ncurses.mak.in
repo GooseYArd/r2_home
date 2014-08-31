@@ -7,6 +7,8 @@ define(`R2_URL', `ftp://invisible-island.net/ncurses/R2_DIST')dnl
 include(`r2.m4')
 R2_DEFAULT_RULES_NOCONFIG
 
+#        --with-termlib=tinfo \
+
 .ncurses.args := \
 	--prefix=$(pfx) \
 	--with-shared \
@@ -17,11 +19,9 @@ R2_DEFAULT_RULES_NOCONFIG
         --without-ada \
         --without-tests \
         --enable-symlinks \
-        --disable-termcap \
+        --enable-termcap \
         --with-default-terminfo-dir=/etc/terminfo \
         --with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo" \
-        --with-ticlib=tic \
-        --with-termlib=tinfo \
         --with-xterm-kbs=del \
         --with-ncursesw 
 
