@@ -1,0 +1,9 @@
+define(`R2_PKG', `tar')dnl
+define(`R2_VERSION', `1.28')dnl
+define(`R2_DIR', `tar-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://ftp.gnu.org/pub/gnu/tar/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES
+

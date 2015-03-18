@@ -1,0 +1,8 @@
+define(`R2_PKG', `bash-completion')dnl
+define(`R2_VERSION', `2.1')dnl
+define(`R2_DIR', `bash-completion-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `https://bash-completion.alioth.debian.org/files/R2_DIST')dnl
+include(`r2.m4')
+R2_DEFAULT_RULES
+

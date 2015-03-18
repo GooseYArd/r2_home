@@ -23,7 +23,9 @@ R2_DEFAULT_RULES_NOCONFIG
         --with-default-terminfo-dir=/etc/terminfo \
         --with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo" \
         --with-xterm-kbs=del \
-        --with-ncursesw 
+        --with-ncursesw \
+ 	--without-cxx \
+  	--without-cxx-binding
 
 .ncurses.config: .ncurses.unpack
 	cd build/$(ncurses.dir) && \
