@@ -1,8 +1,8 @@
 define(`R2_PKG', `emacs')dnl
-define(`R2_VERSION', `24.3')dnl
+define(`R2_VERSION', `24.4')dnl
 define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
 define(`R2_DIST', `R2_DIR.tar.xz')dnl
-define(`R2_URL', `ftp://ftp.gnu.org/pub/gnu/emacs/R2_DIST')dnl
+define(`R2_URL', `http://ftp.gnu.org/pub/gnu/emacs/R2_DIST')dnl
 
 include(`r2.m4')
 R2_DEFAULT_RULES_NOCONFIG
@@ -19,7 +19,6 @@ R2_DEFAULT_RULES_NOCONFIG
 
 .emacs.config: .ncurses.install .emacs.unpack
 	cd build/$(emacs.dir) && \
-	patch -p1 < $(CWD)/patches/emacs-osx.patch  && \
 	CFLAGS="$(CFLAGS) $(LDFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
 	touch $(CWD)/.emacs.config
 
