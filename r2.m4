@@ -49,7 +49,7 @@ define(`R2_RULE_INSTALL',
 dnl
 define(`R2_RULE_CLEAN',
 .R2_PKG.clean:
-	rm -rf R2_BUILD/$(R2_PKG.dir) .R2_PKG.*
+	rm -rf R2_BUILD/$(R2_PKG.dir) .R2_PKG.* submakes/R2_PKG.mak
 GLOBAL_CLEAN += .R2_PKG.clean
 
 .R2_PKG.distclean:
