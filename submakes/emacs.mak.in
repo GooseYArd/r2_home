@@ -1,5 +1,5 @@
 define(`R2_PKG', `emacs')dnl
-define(`R2_VERSION', `24.4')dnl
+define(`R2_VERSION', `24.5')dnl
 define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
 define(`R2_DIST', `R2_DIR.tar.xz')dnl
 define(`R2_URL', `http://ftp.gnu.org/pub/gnu/emacs/R2_DIST')dnl
@@ -8,17 +8,16 @@ include(`r2.m4')
 R2_DEFAULT_RULES_NOCONFIG
 
 .emacs.args := \
-	      --prefix=$(pfx) \
-	      --with-xpm=no \
-   	      --with-jpeg=no \
-    	      --with-png=no \
-    	      --with-tiff=no \
-    	      --with-gif=no \
-    	      --with-x-toolkit=no \
-    	      --without-x
+              --prefix=$(pfx) \
+              --with-xpm=no \
+              --with-jpeg=no \
+              --with-png=no \
+              --with-tiff=no \
+              --with-gif=no \
+              --with-x-toolkit=no \
+              --without-x
 
 .emacs.config: .ncurses.install .emacs.unpack
-	cd build/$(emacs.dir) && \
-	CFLAGS="$(CFLAGS) $(LDFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
-	touch $(CWD)/.emacs.config
-
+        cd build/$(emacs.dir) && \
+        CFLAGS="$(CFLAGS) $(LDFLAGS)" CXXFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure $(.emacs.args)  && \
+        touch $(CWD)/.emacs.config
