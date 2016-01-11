@@ -1,0 +1,18 @@
+define(`R2_PKG', `pcre')dnl
+define(`R2_VERSION', `8.37')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_DEFAULT_RULES_NOCONFIG
+
+.pcre.args := \
+	--prefix=$(pfx) \
+	--without-python
+
+.pcre.config: .pcre.unpack
+	cd build/$(pcre.dir) && \
+	CC=$(CC) CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./configure $(.pcre.args)  && \
+	touch $(CWD)/.pcre.config

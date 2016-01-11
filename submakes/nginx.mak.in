@@ -1,0 +1,37 @@
+define(`R2_PKG', `nginx')dnl
+define(`R2_VERSION_MAJOR', `1.9')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.2')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://nginx.org/download/R2_DIST')
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+nginx.args = \
+	--prefix=$(pfx) \
+	--with-openssl=$(pfx) \
+	--with-pcre=../$(pcre.dir) \
+	--with-zlib=../$(zlib.dir)
+
+.nginx.config: .zlib.install .openssl.install .pcre.install .nginx.unpack
+	cd build/$(nginx.dir) && \
+	export CFLAGS=$(CFLAGS) && \
+	export LDFLAGS=$(LDLAGS) && \
+	./configure $(nginx.args) && \
+	touch $(CWD)/.nginx.config
+
+.nginx.make: .nginx.config
+	cd build/$(nginx.dir) && \
+	$(MAKE) -j4  && \
+	touch $(CWD)/.nginx.make
+
+.nginx.install: .nginx.make
+	cd build/$(nginx.dir) && \
+	$(MAKE) install $(DEST) && \
+	touch $(CWD)/.nginx.install
+
+R2_RULE_CLEAN

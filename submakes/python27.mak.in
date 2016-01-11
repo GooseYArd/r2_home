@@ -1,0 +1,24 @@
+define(`R2_PKG', `python27')dnl
+define(`R2_VERSION_MAJOR', `2.7')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.10')dnl
+define(`R2_DIR', `Python-R2_VERSION')dnl
+define(`R2_DIST', `Python-R2_VERSION.tar.xz')dnl
+define(`R2_URL', `https://www.python.org/ftp/python/R2_VERSION/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_NOCONFIG
+
+.python27.args := \
+	--with-openssl-dir=$(pfx) \
+	--prefix=$(pfx)
+
+.python27.config: .python27.unpack .openssl.install .readline.install
+	cd R2_BUILD/$(python27.dir) && \
+	CC=$(CC) \
+	CXX=$(CXX) \
+	LDFLAGS="$(LDFLAGS)" \
+	LDSHARED=$(LDSHARED) \
+	DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) \
+	CFLAGS="$(CFLAGS) -DHAVE_RL_USERNAME_COMPLETION_FUNCTION" \
+	CXXFLAGS="$(CFLAGS)" ./configure $(.python27.args)  && \
+	touch $(CWD)/$@
