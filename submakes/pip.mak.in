@@ -1,0 +1,28 @@
+define(`R2_PKG', `pip')dnl
+define(`R2_VERSION', `9.0.1')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/R2_DIST')dnl
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+.pip.args := \
+	--prefix=$(pfx)
+
+.pip.make: .pip.unpack .setuptools.install
+	cd build/R2_DIR && \
+	python setup.py build && \
+	touch $(CWD)/.pip.make
+
+.pip.install: .pip.make
+	cd build && \
+	cd R2_DIR && \
+	python setup.py install && \
+	touch $(CWD)/.pip.install
+
+R2_RULE_CLEAN
+

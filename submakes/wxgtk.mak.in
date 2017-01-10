@@ -5,11 +5,12 @@ define(`R2_DIST', `R2_DIR.tar.gz')dnl
 define(`R2_URL', `http://sourceforge.net/projects/wxwindows/files/R2_VERSION/R2_DIST')dnl
 
 include(`r2.m4')
-R2_DEFAULT_RULES_NOCONFIG
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+R2_RULE_CLEAN
 
 #	--with-gtk=2 \
-
-
 
 .wxgtk.args := \
 	--prefix=$(pfx) \

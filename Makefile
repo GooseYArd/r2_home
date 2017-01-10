@@ -22,7 +22,7 @@ PATH := $(pfx)/bin:/usr/local/opt:$(PATH)
 LDSHARED='$(CC) $(ARCHFLAGS) -dynamiclib -undefined suppress -flat_namespace'
 endif
 
-CFLAGS := -I$(pfx)/include $(ARCHFLAGS)
+CFLAGS := -I$(pfx)/include $(ARCHFLAGS) -fPIC
 CPPFLAGS := -I$(pfx)/include $(ARCHFLAGS)
 CXXFLAGS := -I$(pfx)/include $(ARCHFLAGS)
 LDFLAGS := -L$(pfx)/lib $(ARCHFLAGS)

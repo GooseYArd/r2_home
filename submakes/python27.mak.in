@@ -1,6 +1,6 @@
 define(`R2_PKG', `python27')dnl
 define(`R2_VERSION_MAJOR', `2.7')dnl
-define(`R2_VERSION', `R2_VERSION_MAJOR.10')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.12')dnl
 define(`R2_DIR', `Python-R2_VERSION')dnl
 define(`R2_DIST', `Python-R2_VERSION.tar.xz')dnl
 define(`R2_URL', `https://www.python.org/ftp/python/R2_VERSION/R2_DIST')dnl

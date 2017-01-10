@@ -13,7 +13,7 @@ R2_RULE_UNPACK
 .scons.args := \
 	--prefix=$(pfx)
 
-.scons.make:
+.scons.make: .scons.unpack
 	cd build/R2_DIR && \
 	python setup.py build && \
 	touch $(CWD)/.scons.make

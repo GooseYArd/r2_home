@@ -1,5 +1,5 @@
 define(`R2_PKG', `openssl')dnl
-define(`R2_VERSION', `1.0.2c')dnl
+define(`R2_VERSION', `1.0.2j')dnl
 define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
 define(`R2_DIST', `R2_DIR.tar.gz')dnl
 define(`R2_URL', `ftp://ftp.openssl.org/source/R2_DIST')dnl
@@ -28,7 +28,11 @@ endif
 
 .openssl.config: .openssl.unpack .zlib.install
 	cd R2_BUILD/$(openssl.dir) && \
-	CC=$(CC) CXX=$(CXX) CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" ./config $(.openssl.args)  && \
+	CC="$(CC) -fPIC" \
+	CXX=$(CXX) \
+	CFLAGS="$(CFLAGS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	./config $(.openssl.args)  && \
 	touch $(CWD)/$@
 
 .openssl.make: .openssl.config

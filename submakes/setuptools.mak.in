@@ -1,0 +1,33 @@
+define(`R2_PKG', `setuptools')dnl
+define(`R2_VERSION', `32.3.1')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.zip')dnl
+define(`R2_URL', `https://pypi.python.org/packages/e8/68/f968ebc015c7e0021e76b60b8cfd29f9ffbae4b3b58d96ad20045a99562e/R2_DIST')dnl
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+
+.setuptools.args := \
+	--prefix=$(pfx)
+
+.setuptools.unpack: .setuptools.fetch
+	cd build && \
+	unzip ../dists/R2_DIST && \
+	touch $(CWD)/$@
+
+.setuptools.make: .setuptools.unpack
+	cd build/R2_DIR && \
+	python setup.py build && \
+	touch $(CWD)/$@
+
+.setuptools.install: .setuptools.make
+	cd build && \
+	ln -s R2_DIR R2_PKG && \
+	cd R2_DIR && \
+	python setup.py install && \
+	touch $(CWD)/$@
+
+R2_RULE_CLEAN
+
