@@ -1,9 +1,36 @@
 define(`R2_PKG', `git')dnl
-define(`R2_VERSION', `2.1.0')dnl
-define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
-define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_VERSION', `2.29.2')dnl
+define(`R2_DIR', `git-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
 define(`R2_URL', `https://www.kernel.org/pub/software/scm/git/R2_DIST')dnl
 
 include(`r2.m4')
-R2_DECLS
-R2_DEFAULT_RULES
+R2_DEFAULT_RULES_NOCONFIG
+
+.git.args := \
+	--prefix=$(CWD)/R2_BUILD/tools \
+	--with-curl=$(CWD)/R2_BUILD/tools
+
+.git.config: .git.unpack .curl.install .gettext.install
+	cd R2_BUILD/$(git.dir) && \
+	CC=$(CC) CXX=$(CXX) \
+	LDFLAGS="$(LDFLAGS) -ldl -lpthread" \
+	CFLAGS="$(CFLAGS) $(SHLIBS)" \
+	CXXFLAGS="$(CFLAGS)" \
+	PATH=$(CWD)/R2_BUILD/tools/bin:$(PATH) \
+	./configure $(.git.args)  && \
+	touch $(CWD)/.git.config
+
+.git.make: .git.config
+	cd builddir/$(git.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) -j V=1 EXTLIBS="-lz -ldl $(LIBINTL)" && \
+	touch $(CWD)/.git.make
+
+.git.install: .git.make
+	cd builddir/$(git.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) install DESTDIR= && \
+	touch $(CWD)/.git.install

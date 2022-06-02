@@ -1,0 +1,45 @@
+define(`R2_PKG', `unibilium')dnl
+define(`R2_VERSION', `v2.0.0')dnl
+define(`R2_DIR', `R2_PKG-2.0.0')dnl
+define(`R2_DIST', `R2_VERSION.tar.gz')dnl
+define(`R2_URL', `https://github.com/mauke/unibilium/archive/refs/tags/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+R2_RULE_PATCH
+R2_RULE_CLEAN
+unibilium.args :=
+
+
+#	-DLIBLUV_LIBRARY=$(DESTDIR)$(pfx)/lib/lua/5.1/luv.so
+
+
+.unibilium.config: .unibilium.unpack
+	touch $(CWD)/.unibilium.config
+
+.unibilium.make: .unibilium.config
+	cd builddir/$(unibilium.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+        $(MAKE) PREFIX=$(pfx) && \
+	touch $(CWD)/.unibilium.make
+
+.unibilium.install: .unibilium.make
+	cd builddir/$(unibilium.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) install PREFIX=$(pfx) $(DEST) && \
+	touch $(CWD)/.unibilium.install
+
+# 	mkdir build/$(unibilium.dir)/build && \
+# 	cd build/$(unibilium.dir)/build && \
+# 	CFLAGS="$(CFLAGS)" \
+# 	CPPFLAGS="$(CPPLAGS)" \
+# 	LDFLAGS="$(LDFLAGS)" \
+# 	cmake $(.unibilium.args) .. && \
+# 	touch $(CWD)/.unibilium.config

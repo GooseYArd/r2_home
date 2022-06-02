@@ -1,0 +1,44 @@
+define(`R2_PKG', `libtermkey')dnl
+define(`R2_VERSION', `v0.20')dnl
+define(`R2_DIR', `R2_PKG-0.20')dnl
+define(`R2_DIST', `R2_VERSION.tar.gz')dnl
+define(`R2_URL', `https://github.com/neovim/libtermkey/archive/refs/tags/R2_DIST')dnl
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+R2_RULE_PATCH
+R2_RULE_CLEAN
+libtermkey.args :=
+
+
+#	-DLIBLUV_LIBRARY=$(DESTDIR)$(pfx)/lib/lua/5.1/luv.so
+
+
+.libtermkey.config: .libtermkey.unpack
+	touch $(CWD)/.libtermkey.config
+
+.libtermkey.make: .libtermkey.config
+	cd builddir/$(libtermkey.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+        $(MAKE) PREFIX=$(pfx) && \
+	touch $(CWD)/.libtermkey.make
+
+.libtermkey.install: .libtermkey.make
+	cd builddir/$(libtermkey.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) install PREFIX=$(pfx) $(DEST) && \
+	touch $(CWD)/.libtermkey.install
+
+# 	mkdir build/$(libtermkey.dir)/build && \
+# 	cd build/$(libtermkey.dir)/build && \
+# 	CFLAGS="$(CFLAGS)" \
+# 	CPPFLAGS="$(CPPLAGS)" \
+# 	LDFLAGS="$(LDFLAGS)" \
+# 	cmake $(.libtermkey.args) .. && \
+# 	touch $(CWD)/.libtermkey.config

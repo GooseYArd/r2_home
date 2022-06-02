@@ -1,0 +1,33 @@
+define(`R2_PKG', `lpeg')dnl
+define(`R2_VERSION_MAJOR', `1.0')
+define(`R2_VERSION', `R2_VERSION_MAJOR.2')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://www.inf.puc-rio.br/~roberto/lpeg/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+.lpeg.args :=
+
+.lpeg.config: .lpeg.unpack
+#	cd R2_BUILD/$(lpeg.dir) && \
+#	sed -i s@../lua@../lua-5.4.4/src@ makefile
+	touch $(CWD)/.lpeg.config
+
+.lpeg.make: .lpeg.config
+	touch $(CWD)/.lpeg.config
+
+.lpeg.install: .luarocks.install .lpeg.config
+	cd R2_BUILD/$(lpeg.dir) && \
+	export PATH=$(PATH) && \
+	CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	$(DESTDIR)$(pfx)/bin/luarocks install lpeg  && \
+	$(DESTDIR)$(pfx)/bin/luarocks install mpack  && \
+	touch $(CWD)/.lpeg.make
+
+R2_RULE_CLEAN

@@ -1,0 +1,25 @@
+define(`R2_PKG', `neovim')dnl
+define(`R2_VERSION', `v0.7.0')dnl
+define(`R2_DIR', `R2_PKG-0.7.0')dnl
+define(`R2_DIST', `R2_VERSION.tar.gz')dnl
+define(`R2_URL', `https://github.com/neovim/neovim/archive/refs/tags/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DEFAULT_RULES_CMAKE
+
+neovim.args := \
+	-DLIBLUV_LIBRARY=$(DESTDIR)$(pfx)/lib/lua/5.1/luv.so \
+	-DPREFER_LUA=1 \
+	-DLUA_INCLUDE_DIR=$(DESTDIR)$(pfx)/include \
+	-DLUA_LIBRARIES=$(DESTDIR)$(pfx)/lib/lua/5.1 \
+	-DCMAKE_INSTALL_RPATH=$(pfx)/lib
+
+.neovim.config: .luv.install .libuv.install .tree-sitter.install .LuaJIT.install .lua.install .unibilium.install .libtermkey.install .libvterm.install .lpeg.install .neovim.unpack
+
+# 	mkdir build/$(neovim.dir)/build && \
+# 	cd build/$(neovim.dir)/build && \
+# 	CFLAGS="$(CFLAGS)" \
+# 	CPPFLAGS="$(CPPLAGS)" \
+# 	LDFLAGS="$(LDFLAGS)" \
+# 	cmake $(.neovim.args) .. && \
+# 	touch $(CWD)/.neovim.config

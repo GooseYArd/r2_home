@@ -1,0 +1,45 @@
+define(`R2_PKG', `tree-sitter')dnl
+define(`R2_VERSION', `v0.20.6')dnl
+define(`R2_DIR', `R2_PKG-0.20.6')dnl
+define(`R2_DIST', `R2_VERSION.tar.gz')dnl
+define(`R2_URL', `https://github.com/tree-sitter/tree-sitter/archive/refs/tags/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+R2_RULE_PATCH
+R2_RULE_CLEAN
+tree-sitter.args :=
+
+
+#	-DLIBLUV_LIBRARY=$(DESTDIR)$(pfx)/lib/lua/5.1/luv.so
+
+
+.tree-sitter.config: .tree-sitter.unpack
+	touch $(CWD)/.tree-sitter.config
+
+.tree-sitter.make: .tree-sitter.config
+	cd builddir/$(tree-sitter.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+        $(MAKE) PREFIX=$(pfx) && \
+	touch $(CWD)/.tree-sitter.make
+
+.tree-sitter.install: .tree-sitter.make
+	cd builddir/$(tree-sitter.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) install PREFIX=$(pfx) $(DEST) && \
+	touch $(CWD)/.tree-sitter.install
+
+# 	mkdir build/$(tree-sitter.dir)/build && \
+# 	cd build/$(tree-sitter.dir)/build && \
+# 	CFLAGS="$(CFLAGS)" \
+# 	CPPFLAGS="$(CPPLAGS)" \
+# 	LDFLAGS="$(LDFLAGS)" \
+# 	cmake $(.tree-sitter.args) .. && \
+# 	touch $(CWD)/.tree-sitter.config

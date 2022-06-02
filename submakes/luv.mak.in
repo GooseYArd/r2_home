@@ -1,0 +1,20 @@
+define(`R2_PKG', `luv')dnl
+define(`R2_DIR', `R2_PKG')dnl
+define(`R2_GITURL', `https://github.com/luvit/luv.git --recursive')
+define(`R2_GITREF', `242d7a1a98965d0b85a17a784446538cd2d24a3d')
+
+luv.args :=
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_GIT
+R2_RULE_CMAKE_CONFIG
+R2_RULE_CMAKE_MAKE
+R2_RULE_CLEAN
+
+.luv.install: .luv.make
+	cd builddir/$(luv.dir)/build && \
+	DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) make install $(DEST) && \
+	mkdir -p $(DEST)$(pfx)/include/luv && \
+	cp ../src/luv.h $(DEST)$(pfx)/include/luv
+	touch $(CWD)/.luv.install

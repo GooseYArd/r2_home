@@ -1,0 +1,29 @@
+define(`R2_PKG', `LuaJIT')dnl
+define(`R2_VERSION_MAJOR', `2.0')dnl
+define(`R2_VERSION', `R2_VERSION_MAJOR.5')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `https://luajit.org/download/R2_DIST')
+
+include(`r2.m4')
+
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+
+.LuaJIT.config: .LuaJIT.unpack
+	cd R2_BUILD/$(LuaJIT.dir) && \
+	sed -i s@/usr/local@$(pfx)@ Makefile
+	touch $(CWD)/.LuaJIT.config
+
+.LuaJIT.make: .LuaJIT.config
+	cd R2_BUILD/$(LuaJIT.dir) && \
+	$(MAKE) -j $(shell nproc)  && \
+	touch $(CWD)/.LuaJIT.make
+
+.LuaJIT.install: .LuaJIT.make
+	cd R2_BUILD/$(LuaJIT.dir) && \
+	$(MAKE) install $(DEST) && \
+	touch $(CWD)/.LuaJIT.install
+
+R2_RULE_CLEAN

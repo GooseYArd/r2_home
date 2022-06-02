@@ -1,0 +1,24 @@
+define(`R2_PKG', `luarocks')dnl
+define(`R2_VERSION_MAJOR', `3.9')
+define(`R2_VERSION', `R2_VERSION_MAJOR.0')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `http://luarocks.github.io/luarocks/releases/R2_DIST')dnl
+
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_PATCH
+R2_RULE_UNPACK
+R2_RULE_CONFIG
+R2_RULE_MAKE
+
+luarocks.args := \
+	--prefix=$(pfx) \
+	--with-lua-include=$(DESTDIR)$(pfx)/include \
+	--with-lua-bin=$(DESTDIR)$(pfx)/bin
+
+.luarocks.config: .lua.install
+
+R2_RULE_INSTALL
+R2_RULE_CLEAN

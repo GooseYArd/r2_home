@@ -1,0 +1,41 @@
+define(`R2_PKG', `libvterm')dnl
+define(`R2_VERSION', `0.1.4')dnl
+define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
+define(`R2_DIST', `R2_DIR.tar.gz')dnl
+define(`R2_URL', `https://www.leonerd.org.uk/code/libvterm/R2_DIST')dnl
+include(`r2.m4')
+R2_DECLS
+R2_RULE_FETCH
+R2_RULE_UNPACK
+R2_RULE_PATCH
+R2_RULE_CLEAN
+libvterm.args :=
+
+
+.libvterm.config: .libvterm.unpack
+	touch $(CWD)/.libvterm.config
+
+.libvterm.make: .libvterm.config
+	cd builddir/$(libvterm.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+        $(MAKE) PREFIX=$(pfx) && \
+	touch $(CWD)/.libvterm.make
+
+.libvterm.install: .libvterm.make
+	cd builddir/$(libvterm.dir) && \
+	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+        $(MAKE) install PREFIX=$(pfx) $(DEST) && \
+	touch $(CWD)/.libvterm.install
+
+# 	mkdir build/$(libvterm.dir)/build && \
+# 	cd build/$(libvterm.dir)/build && \
+# 	CFLAGS="$(CFLAGS)" \
+# 	CPPFLAGS="$(CPPLAGS)" \
+# 	LDFLAGS="$(LDFLAGS)" \
+# 	cmake $(.libvterm.args) .. && \
+# 	touch $(CWD)/.libvterm.config

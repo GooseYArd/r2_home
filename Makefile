@@ -4,6 +4,9 @@ pfx := $(CWD)/install
 DEST :=
 SUBMAKES := $(wildcard submakes/*.mak.in)
 
+CAFILE := $(CWD)/ca-certificates.crt
+WGET := $(CWD)/builddir/tools/bin/curl -O -L --cacert $(CAFILE)
+
 include $(SUBMAKES:mak.in=mak)
 
 LD_LIBRARY_PATH := $(pfx)/lib
@@ -25,7 +28,14 @@ endif
 CFLAGS := -I$(pfx)/include $(ARCHFLAGS) -fPIC
 CPPFLAGS := -I$(pfx)/include $(ARCHFLAGS)
 CXXFLAGS := -I$(pfx)/include $(ARCHFLAGS)
-LDFLAGS := -L$(pfx)/lib $(ARCHFLAGS)
+LDFLAGS := -L$(pfx)/lib -Wl,-rpath,$(pfx)/libs $(ARCHFLAGS)
+
+GIT = \
+      LD_LIBRARY_PATH=$(CWD)/builddir/tools/lib \
+      PATH=$(CWD)/builddir/tools/bin:$(PATH) \
+      $(CWD)/builddir/tools/bin/git \
+	-c http.sslCAInfo=$(CWD)/ca-certificates.crt \
+	-c http.sslVerify=false
 
 %.mak: %.mak.in r2.m4
 	m4 $< > $@
