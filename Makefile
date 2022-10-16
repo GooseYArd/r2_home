@@ -5,7 +5,8 @@ DEST :=
 SUBMAKES := $(wildcard submakes/*.mak.in)
 
 CAFILE := $(CWD)/ca-certificates.crt
-WGET := $(CWD)/builddir/tools/bin/curl -O -L --cacert $(CAFILE)
+# WGET := $(CWD)/builddir/tools/bin/curl -O -L --cacert $(CAFILE)
+WGET := curl -O -L --cacert $(CAFILE)
 
 include $(SUBMAKES:mak.in=mak)
 
@@ -30,13 +31,13 @@ CPPFLAGS := -I$(pfx)/include $(ARCHFLAGS)
 CXXFLAGS := -I$(pfx)/include $(ARCHFLAGS)
 LDFLAGS := -L$(pfx)/lib -Wl,-rpath,$(pfx)/libs $(ARCHFLAGS)
 
-GIT = \
-      LD_LIBRARY_PATH=$(CWD)/builddir/tools/lib \
-      PATH=$(CWD)/builddir/tools/bin:$(PATH) \
-      $(CWD)/builddir/tools/bin/git \
-	-c http.sslCAInfo=$(CWD)/ca-certificates.crt \
-	-c http.sslVerify=false
-
+# GIT = \
+#       LD_LIBRARY_PATH=$(CWD)/builddir/tools/lib \
+#       PATH=$(CWD)/builddir/tools/bin:$(PATH) \
+#       $(CWD)/builddir/tools/bin/git \
+# 	-c http.sslCAInfo=$(CWD)/ca-certificates.crt \
+# 	-c http.sslVerify=false
+GIT = git
 %.mak: %.mak.in r2.m4
 	m4 $< > $@
 

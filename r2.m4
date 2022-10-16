@@ -11,7 +11,7 @@ R2_PKG.gitref := R2_GITREF
 )dnl
 dnl
 define(`R2_RULE_FETCH',
-.R2_PKG.fetch: .curl.install
+.R2_PKG.fetch:
 	mkdir -p $(CWD)/R2_DISTS && cd $(CWD)/R2_DISTS && \
 		if [ ! -f $(R2_PKG.tgz) ]; then $(WGET) $(R2_PKG.url); fi && \
 	touch -a $(CWD)/.R2_PKG.fetch
@@ -21,7 +21,7 @@ define(`R2_RULE_GIT',
 .R2_PKG.fetch:
 	touch $(CWD)/.R2_PKG.fetch
 
-.R2_PKG.unpack: .R2_PKG.fetch .git.install
+.R2_PKG.unpack: .R2_PKG.fetch
 	rm -rf $(CWD)/R2_BUILD/$(R2_PKG.dir) && \
 	$(GIT) clone $(R2_PKG.giturl) $(CWD)/R2_BUILD/$(R2_PKG.dir) && \
         cd R2_BUILD/$(R2_PKG.dir) && \
