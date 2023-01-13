@@ -49,6 +49,7 @@ all: \
 	dists/.exist \
 	build/.exist \
 	$(OSDEPS) \
+	.neovim.install \
 	env.sh
 
 # Misc small targets

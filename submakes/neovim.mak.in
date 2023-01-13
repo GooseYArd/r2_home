@@ -1,6 +1,6 @@
 define(`R2_PKG', `neovim')dnl
-define(`R2_VERSION', `v0.8.0')dnl
-define(`R2_DIR', `R2_PKG-0.8.0')dnl
+define(`R2_VERSION', `v0.8.1')dnl
+define(`R2_DIR', `R2_PKG-0.8.1')dnl
 define(`R2_DIST', `R2_VERSION.tar.gz')dnl
 define(`R2_URL', `https://github.com/neovim/neovim/archive/refs/tags/R2_DIST')dnl
 
