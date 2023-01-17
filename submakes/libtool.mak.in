@@ -1,8 +1,8 @@
 define(`R2_PKG', `libtool')dnl
-define(`R2_VERSION', `2.2')dnl
+define(`R2_VERSION', `2.4')dnl
 define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
-define(`R2_DIST', `R2_DIR.tar.gz')dnl
-define(`R2_URL', `ftp://ftp.gnu.org/pub/gnu/R2_PKG/R2_DIST')dnl
+define(`R2_DIST', `R2_DIR.tar.xz')dnl
+define(`R2_URL', `http://ftp.gnu.org/pub/gnu/libtool/libtool-2.4.tar.xz')dnl
 
 include(`r2.m4')
 R2_DECLS

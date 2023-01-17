@@ -6,7 +6,7 @@ SUBMAKES := $(wildcard submakes/*.mak.in)
 
 CAFILE := $(CWD)/ca-certificates.crt
 # WGET := $(CWD)/builddir/tools/bin/curl -O -L --cacert $(CAFILE)
-WGET := curl -O -L --cacert $(CAFILE)
+CURL := curl -O -L --cacert $(CAFILE)
 
 include $(SUBMAKES:mak.in=mak)
 
@@ -15,16 +15,47 @@ PKG_CONFIG_PATH := $(pfx)/lib/pkgconfig
 PATH := $(pfx)/bin:$(PATH)
 OS := $(shell uname)
 
-# --target=i386-apple-darwin13.2.0
 ifeq "$(OS)" "Darwin"
-DYLD_LIBRARY_PATH := $(pfx)/lib
-#CXX := g++-4.7
-#CC := gcc-4.7
-SHASUM := shasum
-#OSDEPS := /usr/local/bin/gcc-4.7
-PATH := $(pfx)/bin:/usr/local/opt:$(PATH)
-LDSHARED='$(CC) $(ARCHFLAGS) -dynamiclib -undefined suppress -flat_namespace'
+OSX_MINVER := 12.3
+SHASUM := shasum -a256
+SED_TARGET := .sed.install
+INSTALL_TARGET := .coreutils.install
+DYLD_FALLBACK_LIBRARY_PATH := $(DESTDIR)$(pfx)/lib
+ARCHFLAGS := "-mmacosx-version-min=$(OSX_MINVER)"
+MACOSX_DEPLOYMENT_TARGET=$(OSX_MINVER)
+LDFLAGS := "-Wl,-headerpad_max_install_names"
+LDCXXSHARED := "/usr/bin/clang++ -bundle -undefined dynamic_lookup"
+SHLIBS := -ldl -framework CoreFoundation -framework Foundation
+INSTALL = \
+      LD_LIBRARY_PATH=$(CWD)/builddir/tools/lib \
+      PATH=$(CWD)/builddir/tools/bin:$(PATH) \
+      $(CWD)/builddir/tools/bin/install
+SED = \
+      LD_LIBRARY_PATH=$(CWD)/builddir/tools/lib \
+      PATH=$(CWD)/builddir/tools/bin:$(PATH) \
+      $(CWD)/builddir/tools/bin/sed
+SEDI = $(SED) -i
+VERSION = $(shell head -1 $(CWD)/../portable-bart-rest-api/debian/changelog | awk '{ print $$2 }' | $(SED) 's/[()]//g')
+LIBINTL := -lintl -liconv
+MACHTYPE := arm64-apple-darwin18
+APP := $(CWD)
+OSXDEST := $(APP)/install/usr/local
+OSXPY := $(OSXDEST)/lib/akamai-portable-python/bin/python3
+PIP :=  $(OSXDEST)/lib/akamai-portable-python/bin/pip --cert $(CWD)/ca-certificates.crt
+PDM :=  $(OSXDEST)/lib/akamai-portable-python/bin/pdm
+else  # LINUX
+
+# LD_LIBRARY_PATH := $(DESTDIR)$(pfx)/lib
+INSTALL := install
+LIBINTL := -liconv
+PIP :=  $(DESTDIR)$(pfx)/bin/pip3
+#PIP :=  $(DESTDIR)$(pfx)/bin/pip --cert $(CWD)/ca-certificates.crt
+PDM :=  $(DESTDIR)$(pfx)/bin/pdm
+SED := sed
+SEDI := sed -i
 endif
+
+
 
 CFLAGS := -I$(pfx)/include $(ARCHFLAGS) -fPIC
 CPPFLAGS := -I$(pfx)/include $(ARCHFLAGS)

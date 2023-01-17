@@ -10,11 +10,15 @@ R2_DECLS
 R2_RULE_FETCH
 R2_RULE_UNPACK
 
-lua.args := linux
+# ifeq "$(OS)" "Darwin"
+lua.args := macosx
+# else
+# lua.args := linux
+# endif
 
-.lua.config: .lua.unpack
+.lua.config: .lua.unpack .sed.install
 	cd R2_BUILD/$(lua.dir) && \
-	sed -i s@/usr/local@$(pfx)@g Makefile
+	$(SEDI) s@/usr/local@$(pfx)@g Makefile
 	touch $(CWD)/.lua.config
 
 .lua.make: .lua.config

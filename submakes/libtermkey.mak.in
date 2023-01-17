@@ -18,13 +18,15 @@ libtermkey.args :=
 .libtermkey.config: .libtermkey.unpack
 	touch $(CWD)/.libtermkey.config
 
-.libtermkey.make: .libtermkey.config
-	cd builddir/$(libtermkey.dir) && \
+.libtermkey.make: .libtermkey.config .libtool.install .pkg-config.install
+	cd R2_BUILD/$(libtermkey.dir) && \
 	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
 	CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPLAGS)" \
 	LDFLAGS="$(LDFLAGS)" \
+	PATH=$(DESTDIR)$(pfx)/bin:$(PATH) \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool \
         $(MAKE) PREFIX=$(pfx) && \
 	touch $(CWD)/.libtermkey.make
 
@@ -32,6 +34,7 @@ libtermkey.args :=
 	cd builddir/$(libtermkey.dir) && \
 	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool
         $(MAKE) install PREFIX=$(pfx) $(DEST) && \
 	touch $(CWD)/.libtermkey.install
 

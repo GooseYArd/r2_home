@@ -19,13 +19,14 @@ unibilium.args :=
 .unibilium.config: .unibilium.unpack
 	touch $(CWD)/.unibilium.config
 
-.unibilium.make: .unibilium.config
+.unibilium.make: .unibilium.config .libtool.install
 	cd builddir/$(unibilium.dir) && \
 	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib\
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
 	CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPLAGS)" \
 	LDFLAGS="$(LDFLAGS)" \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool \
         $(MAKE) PREFIX=$(pfx) && \
 	touch $(CWD)/.unibilium.make
 
@@ -33,6 +34,7 @@ unibilium.args :=
 	cd builddir/$(unibilium.dir) && \
 	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool \
         $(MAKE) install PREFIX=$(pfx) $(DEST) && \
 	touch $(CWD)/.unibilium.install
 

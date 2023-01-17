@@ -14,7 +14,7 @@ neovim.args := \
 	-DLUA_LIBRARIES=$(DESTDIR)$(pfx)/lib/lua/5.1 \
 	-DCMAKE_INSTALL_RPATH=$(pfx)/lib
 
-.neovim.config: .luv.install .libuv.install .tree-sitter.install .LuaJIT.install .lua.install .unibilium.install .libtermkey.install .libvterm.install .lpeg.install .neovim.unpack
+.neovim.config: .luv.install .libuv.install .tree-sitter.install .lua.install .unibilium.install .libtermkey.install .libvterm.install .lpeg.install .neovim.unpack
 
 # 	mkdir build/$(neovim.dir)/build && \
 # 	cd build/$(neovim.dir)/build && \

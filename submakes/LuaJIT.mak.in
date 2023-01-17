@@ -11,9 +11,9 @@ R2_DECLS
 R2_RULE_FETCH
 R2_RULE_UNPACK
 
-.LuaJIT.config: .LuaJIT.unpack
+.LuaJIT.config: .LuaJIT.unpack .sed.install
 	cd R2_BUILD/$(LuaJIT.dir) && \
-	sed -i s@/usr/local@$(pfx)@ Makefile
+	$(SEDI) s@/usr/local@$(pfx)@ Makefile
 	touch $(CWD)/.LuaJIT.config
 
 .LuaJIT.make: .LuaJIT.config

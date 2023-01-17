@@ -1,32 +1,14 @@
 define(`R2_PKG', `pkg-config')dnl
-define(`R2_VERSION', `0.28')dnl
+define(`R2_VERSION', `0.29.2')dnl
 define(`R2_DIR', `R2_PKG-R2_VERSION')dnl
 define(`R2_DIST', `R2_DIR.tar.gz')dnl
-define(`R2_URL', `http://pkgconfig.freedesktop.org/releases/R2_DIST')dnl
+define(`R2_URL', `https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz')dnl
 
 include(`r2.m4')
 
-R2_DEFAULT_RULES_NOCONFIG
+R2_DEFAULT_RULES
 
-.pkg-config.args := \
+pkg-config.args := \
 	--prefix=$(pfx) \
-	--with-internal-glib
-
-#	GLIB_CFLAGS="$(CFLAGS) -I$(pfx)/lib/glib-2.0/include/ -I$(pfx)/include/glib-2.0" \
-#	GLIB_LIBS="$(LDFLAGS)" \
-
-.pkg-config.config: .pkg-config.unpack .gettext.install
-	cd build/$(pkg-config.dir) && \
-	patch -p1 < ../../patches/pkg-config.decarbon.patch && \
-	cd glib && \
-	autoreconf && \
-	cd .. && \
-	export CC=$(CC) && \
-	CC=$(CC) \
-	DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) \
-	LDFLAGS="$(LDFLAGS)" \
-	CFLAGS="$(CFLAGS)" \
-	CXXFLAGS="$(CFLAGS)" \
-	./configure $(.pkg-config.args)  && \
-	touch $(CWD)/.pkg-config.config
+	--with-internal-glib 
 

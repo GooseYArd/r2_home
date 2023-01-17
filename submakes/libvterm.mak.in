@@ -22,6 +22,7 @@ libvterm.args :=
 	CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPLAGS)" \
 	LDFLAGS="$(LDFLAGS)" \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool \
         $(MAKE) PREFIX=$(pfx) && \
 	touch $(CWD)/.libvterm.make
 
@@ -29,6 +30,7 @@ libvterm.args :=
 	cd builddir/$(libvterm.dir) && \
 	DYLD_LIBRARY_PATH=$(DESTDIR)$(pfx)/lib \
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(DESTDIR)$(pfx)/lib \
+	LIBTOOL=$(DESTDIR)$(pfx)/bin/libtool \
         $(MAKE) install PREFIX=$(pfx) $(DEST) && \
 	touch $(CWD)/.libvterm.install
 

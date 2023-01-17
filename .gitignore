@@ -12,3 +12,5 @@ dists
 config.m4
 install
 *~
+builddir
+logs
